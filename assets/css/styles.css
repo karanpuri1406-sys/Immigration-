@@ -582,27 +582,6 @@ p  { text-wrap: pretty; }
 .pill--upfront { background: var(--wash); color: var(--ink-2); }
 .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
-/* ---------- Stats ---------- */
-.stats { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); }
-.stat__num { font-family: var(--display); font-size: clamp(2.1rem, 4vw, 3rem); font-weight: 700; color: var(--white); line-height: 1; letter-spacing: -0.02em; }
-.stat__label { margin-top: .6rem; font-size: var(--step--1); color: color-mix(in srgb, var(--white) 68%, var(--ink)); }
-
-/* ---------- Testimonials ---------- */
-.quote {
-  background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: clamp(1.4rem, 2.4vw, 2rem);
-  display: flex; flex-direction: column; gap: 1.1rem;
-}
-.quote__code {
-  align-self: flex-start;
-  font-variant-numeric: tabular-nums; font-weight: 700; font-size: .78rem; letter-spacing: .1em;
-  color: var(--white); background: var(--blue);
-  padding: .25rem .6rem; border-radius: 2px;
-}
-.quote blockquote { font-family: var(--display); font-size: var(--step-1); line-height: 1.45; color: var(--ink); }
-.quote figcaption { margin-top: auto; font-size: var(--step--1); color: var(--ink-70); }
-.quote figcaption strong { display: block; color: var(--ink); font-size: .97rem; }
-
 /* ---------- FAQ ---------- */
 .faq { border-top: 1px solid var(--line); }
 .faq details { border-bottom: 1px solid var(--line); }
