@@ -623,6 +623,22 @@ p  { text-wrap: pretty; }
 .form__consent input { width: auto; margin-top: .25rem; flex: none; }
 .form__note { font-size: .84rem; color: var(--ink-70); }
 
+/* Honeypot: off-screen for people, visible to bots that fill every field. */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+/* Submission feedback */
+.form__status {
+  padding: .9rem 1.1rem;
+  border-radius: var(--radius);
+  border-left: 3px solid var(--blue);
+  background: var(--blue-05);
+  font-size: .92rem;
+  color: var(--ink);
+}
+.form__status[data-state="ok"]  { border-left-color: var(--gold); background: var(--cream); }
+.form__status[data-state="err"] { border-left-color: #B3261E; background: #FDECEA; color: #6B1F17; }
+.form .btn[aria-busy="true"] { opacity: .6; pointer-events: none; }
+
 /* ---------- Services scroller ----------
    Horizontal scroll-snap rail. Native scrolling does the work, so it keeps
    touch momentum on mobile and stays keyboard reachable; the arrows are a

@@ -49,18 +49,30 @@ not do" list) with the client's own words. Those two sections are what separate 
 
 ---
 
-## 2. Connect the contact form
+## 2. The contact form
 
-The form currently does nothing except show a notice. `assets/js/main.js` has a `data-enquiry-form`
-handler at the bottom — **delete that block** once you wire up a real endpoint.
+Live, posting to **Formspree** (`https://formspree.io/f/mppawwlg`). Submissions appear in the
+Formspree dashboard and are forwarded to the email registered on that account.
 
-Easiest options, no backend required:
+How it behaves:
 
-- **Netlify Forms** — host on Netlify, add `netlify` and `name="assessment"` to the `<form>` tag. Done.
-- **Formspree** — set `action="https://formspree.io/f/XXXX"` and `method="POST"` on the `<form>`.
-- **Web3Forms** — free, add a hidden `access_key` input.
+- Submits over `fetch`, so the person stays on the page and sees an inline confirmation rather than
+  being redirected to a Formspree screen.
+- The `<form>` still carries a real `action` and `method`, so if JavaScript fails to load the
+  browser falls back to a normal POST. **An enquiry is never silently lost.**
+- A hidden `_gotcha` honeypot field discards bot submissions. Migration forms attract heavy spam.
+- `_subject` sets the notification email subject line.
+- Required fields are validated by the browser before anything is sent.
 
-Add a honeypot field or captcha. Migration enquiry forms attract heavy spam.
+To change the destination, edit the `action` on the `<form>` in `contact.html`. To move to a
+different provider entirely, the handler is at the bottom of `assets/js/main.js`.
+
+**Free-tier limit:** Formspree allows 50 submissions per month. Watch it once traffic starts, and
+upgrade before it silently starts rejecting enquiries.
+
+**First submission needs confirming.** Formspree emails the account owner to verify the form the
+first time it receives data. Send one test enquiry yourself and confirm that email, or real
+enquiries will not come through.
 
 ---
 

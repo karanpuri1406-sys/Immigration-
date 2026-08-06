@@ -108,19 +108,74 @@
   if (year) year.textContent = String(new Date().getFullYear());
 
   /* ---- Enquiry form ----
-     Static demo handler. Replace with a real endpoint (Formspree, Netlify
-     Forms, Web3Forms, or the client's CRM) before going live. See README.md. */
+     Posts to Formspree over fetch so the person stays on the page instead of
+     being bounced to a third-party thank-you screen. The form still carries a
+     real action and method, so if this script fails to load the browser falls
+     back to a normal POST and the enquiry is not lost. */
   var form = document.querySelector("[data-enquiry-form]");
-  if (form) {
+  if (form && window.fetch) {
+    var status = form.querySelector("[data-form-status]");
+    var submit = form.querySelector('[type="submit"]');
+    var submitLabel = submit ? submit.textContent : "";
+
+    function say(message, state) {
+      if (!status) return;
+      status.hidden = false;
+      status.textContent = message;
+      status.setAttribute("data-state", state);
+      status.focus();
+    }
+
     form.addEventListener("submit", function (e) {
+      // Let the browser show its own messages for empty required fields.
+      if (!form.checkValidity()) return;
+
       e.preventDefault();
-      var status = form.querySelector("[data-form-status]");
-      if (status) {
-        status.hidden = false;
-        status.textContent =
-          "This form is not connected yet. Connect a form endpoint before launch, then remove this handler from assets/js/main.js.";
-        status.focus();
+      if (status) status.hidden = true;
+      if (submit) {
+        submit.setAttribute("aria-busy", "true");
+        submit.textContent = "Sending…";
       }
+
+      fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" }
+      })
+        .then(function (res) {
+          if (res.ok) {
+            form.reset();
+            say(
+              "Thank you. Your enquiry has reached us and we will come back to you with an assessment. " +
+                "If it is urgent, call or message us on WhatsApp.",
+              "ok"
+            );
+          } else {
+            return res.json().then(function (data) {
+              var detail =
+                data && data.errors
+                  ? data.errors.map(function (x) { return x.message; }).join(", ")
+                  : "";
+              say(
+                "That did not send" + (detail ? " (" + detail + ")" : "") +
+                  ". Please try again, or call or message us on WhatsApp.",
+                "err"
+              );
+            });
+          }
+        })
+        .catch(function () {
+          say(
+            "That did not send. Check your connection and try again, or call or message us on WhatsApp.",
+            "err"
+          );
+        })
+        .then(function () {
+          if (submit) {
+            submit.removeAttribute("aria-busy");
+            submit.textContent = submitLabel;
+          }
+        });
     });
   }
 })();
