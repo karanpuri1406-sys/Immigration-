@@ -455,7 +455,8 @@ p  { text-wrap: pretty; }
 .rail--light .rail__foot { border-top-color: var(--line); color: var(--ink-70); }
 .rail--light .rail__code--muted { background: var(--wash); color: var(--ink); }
 
-/* Horizontal variant, for the band directly under the home hero */
+/* Horizontal variant, for the band directly under the home hero. An arrow
+   chevron sits on the connector so the flow between subclasses is explicit. */
 @media (min-width: 880px) {
   .rail--row .rail__steps { grid-template-columns: repeat(3, 1fr); column-gap: 2.5rem; }
   .rail--row .rail__step { padding-bottom: 0; align-content: start; }
@@ -463,6 +464,14 @@ p  { text-wrap: pretty; }
     left: 72px; right: -2.5rem; top: 22px;
     bottom: auto; width: auto; height: 2px;
     background: linear-gradient(to right, var(--gold), color-mix(in srgb, var(--gold) 15%, transparent));
+  }
+  .rail--row .rail__step:not(:last-child)::after {
+    content: "";
+    position: absolute; right: -2.15rem; top: 22px;
+    width: 9px; height: 9px;
+    border-right: 2.5px solid var(--gold);
+    border-bottom: 2.5px solid var(--gold);
+    transform: translateY(-50%) rotate(-45deg);
   }
 }
 
