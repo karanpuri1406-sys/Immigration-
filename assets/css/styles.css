@@ -798,6 +798,49 @@ p  { text-wrap: pretty; }
   .svc:hover { transform: none; }
 }
 
+/* ---------- Testimonial cards ---------- */
+.tm {
+  scroll-snap-align: start;
+  display: flex; flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 2.6vw, 2rem);
+  margin: 0;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.tm:hover { border-color: var(--gold); box-shadow: var(--shadow); }
+
+.tm__photo {
+  width: 62px; height: 62px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--cream);
+}
+.tm__visa {
+  align-self: flex-start;
+  margin-top: 1.1rem;
+  font-size: .66rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+  background: var(--gold-10);
+  padding: .3rem .6rem;
+  border-radius: 2px;
+}
+.tm blockquote {
+  margin: 1rem 0 0;
+  font-size: .96rem; line-height: 1.62;
+  color: var(--ink-2);
+}
+.tm blockquote::before { content: "\201C"; }
+.tm blockquote::after  { content: "\201D"; }
+.tm figcaption {
+  margin-top: auto; padding-top: 1.25rem;
+  display: flex; flex-direction: column; gap: .15rem;
+}
+.tm figcaption strong { font-size: .98rem; color: var(--ink); }
+.tm figcaption span { font-size: .85rem; color: var(--ink-70); }
+
 /* ---------- Why choose us ---------- */
 .reasons > li {
   position: relative;

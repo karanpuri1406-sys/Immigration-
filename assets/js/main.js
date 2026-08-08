@@ -68,40 +68,45 @@
      without this. These buttons are a convenience layer: they page by one
      card width and disable themselves at each end. If everything already
      fits on screen, they hide entirely. */
-  var rail = document.getElementById("svc-rail");
-  if (rail) {
-    var nav = document.querySelector(".scroller__nav");
-    var prev = document.querySelector('[data-scroll="prev"]');
-    var next = document.querySelector('[data-scroll="next"]');
+  // Each rail is paired with its buttons through aria-controls, so any number
+  // of scrollers on a page work without extra wiring.
+  Array.prototype.forEach.call(
+    document.querySelectorAll(".scroller__rail"),
+    function (rail) {
+      var id = rail.id;
+      var prev = document.querySelector('[data-scroll="prev"][aria-controls="' + id + '"]');
+      var next = document.querySelector('[data-scroll="next"][aria-controls="' + id + '"]');
+      var nav = prev ? prev.parentNode : null;
 
-    function step() {
-      var card = rail.querySelector(".svc");
-      if (!card) return rail.clientWidth;
-      var gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
-      return card.getBoundingClientRect().width + gap;
+      function step() {
+        var card = rail.firstElementChild;
+        if (!card) return rail.clientWidth;
+        var gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
+        return card.getBoundingClientRect().width + gap;
+      }
+
+      function sync() {
+        var overflows = rail.scrollWidth - rail.clientWidth > 4;
+        if (nav) nav.hidden = !overflows;
+        if (!overflows) return;
+        var max = rail.scrollWidth - rail.clientWidth;
+        if (prev) prev.disabled = rail.scrollLeft <= 2;
+        if (next) next.disabled = rail.scrollLeft >= max - 2;
+      }
+
+      function page(dir) {
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        rail.scrollBy({ left: dir * step(), behavior: reduce ? "auto" : "smooth" });
+      }
+
+      if (prev) prev.addEventListener("click", function () { page(-1); });
+      if (next) next.addEventListener("click", function () { page(1); });
+
+      rail.addEventListener("scroll", sync, { passive: true });
+      window.addEventListener("resize", sync);
+      sync();
     }
-
-    function sync() {
-      var overflows = rail.scrollWidth - rail.clientWidth > 4;
-      if (nav) nav.hidden = !overflows;
-      if (!overflows) return;
-      var max = rail.scrollWidth - rail.clientWidth;
-      if (prev) prev.disabled = rail.scrollLeft <= 2;
-      if (next) next.disabled = rail.scrollLeft >= max - 2;
-    }
-
-    function page(dir) {
-      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      rail.scrollBy({ left: dir * step(), behavior: reduce ? "auto" : "smooth" });
-    }
-
-    if (prev) prev.addEventListener("click", function () { page(-1); });
-    if (next) next.addEventListener("click", function () { page(1); });
-
-    rail.addEventListener("scroll", sync, { passive: true });
-    window.addEventListener("resize", sync);
-    sync();
-  }
+  );
 
   /* ---- Current year in the footer ---- */
   var year = document.querySelector("[data-year]");
