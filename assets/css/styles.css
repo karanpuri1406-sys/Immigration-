@@ -798,6 +798,27 @@ p  { text-wrap: pretty; }
   .svc:hover { transform: none; }
 }
 
+/* ---------- Framed figure ---------- */
+.figure {
+  margin: 0;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.figure img {
+  width: 100%; height: auto;
+  display: block;
+  background: var(--ink);
+}
+.figure figcaption {
+  padding: 1rem 1.25rem;
+  font-size: var(--step--1);
+  color: var(--ink-70);
+  border-top: 1px solid var(--line);
+}
+
 /* ---------- Testimonial cards ---------- */
 .tm {
   scroll-snap-align: start;
