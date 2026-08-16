@@ -855,6 +855,38 @@ p  { text-wrap: pretty; }
   max-width: 100ch;
 }
 
+/* ---------- Cookie consent ---------- */
+.consent {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 200;
+  background: var(--ink);
+  color: color-mix(in srgb, var(--white) 82%, var(--ink));
+  border-top: 3px solid var(--gold);
+  box-shadow: 0 -8px 32px -12px rgba(0, 20, 45, .5);
+  transform: translateY(100%);
+  transition: transform .3s ease;
+}
+.has-consent-banner .consent { transform: none; }
+.consent__in {
+  max-width: var(--wrap); margin-inline: auto;
+  padding: 1.1rem var(--gutter);
+  display: grid; gap: 1rem 2rem; align-items: center;
+}
+@media (min-width: 800px) { .consent__in { grid-template-columns: 1fr auto; } }
+.consent__text { font-size: .93rem; line-height: 1.55; max-width: 70ch; }
+.consent__text a { color: var(--gold-30); }
+.consent__actions { display: flex; flex-wrap: wrap; gap: .7rem; }
+.consent__actions .btn { padding: .65rem 1.2rem; font-size: .92rem; }
+.consent__actions .btn--ghost { color: var(--white); border-color: color-mix(in srgb, var(--white) 40%, transparent); }
+.consent__actions .btn--ghost:hover { background: var(--white); color: var(--ink); border-color: var(--white); }
+
+/* Keep the floating WhatsApp button clear of the banner while it is open */
+.has-consent-banner .whatsapp { bottom: 7.5rem; }
+@media (min-width: 800px) { .has-consent-banner .whatsapp { bottom: 5.5rem; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .consent { transition: none; }
+}
+
 /* ---------- Floating WhatsApp ---------- */
 .whatsapp {
   position: fixed; right: 1.15rem; bottom: 1.15rem; z-index: 90;
