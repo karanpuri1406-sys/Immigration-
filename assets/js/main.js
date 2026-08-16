@@ -149,6 +149,14 @@
       })
         .then(function (res) {
           if (res.ok) {
+            // GA4 recommended event for a captured lead.
+            if (window.thTrack) {
+              window.thTrack("generate_lead", {
+                form_name: "assessment_request",
+                enquiry_type: (form.querySelector("#interest") || {}).value || "unspecified",
+                current_visa: (form.querySelector("#current-visa") || {}).value || "unspecified"
+              });
+            }
             form.reset();
             say(
               "Thank you. Your enquiry has reached us and we will come back to you with an assessment. " +
